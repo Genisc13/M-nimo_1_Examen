@@ -2,6 +2,9 @@ package edu.upc.dsa.models;
 
 import edu.upc.dsa.util.RandomUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class User {
 
     String id;
@@ -10,10 +13,17 @@ public class User {
     String birthday;
     String electronic;
     String password;
+    int dsa_coins;
+
+    List<Objeto> compras;
+
+
+
     static int lastId;
 
     public User() {
         this.id = RandomUtils.getId();
+        this.compras= new LinkedList<Objeto>();
     }
 
     public User(String name, String surname, String birthday, String electronic, String password) {
@@ -23,6 +33,23 @@ public class User {
         this.setBirthday(birthday);
         this.setElectronic(electronic);
         this.setPassword(password);
+        this.setDsa_coins(50);
+        this.compras=new LinkedList<Objeto>();
+    }
+    public List<Objeto> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<Objeto> compras) {
+        this.compras = compras;
+    }
+
+    public int getDsa_coins() {
+        return dsa_coins;
+    }
+
+    public void setDsa_coins(int dsa_coins) {
+        this.dsa_coins = dsa_coins;
     }
 
     public String getElectronic() {
@@ -76,6 +103,30 @@ public class User {
     @Override
     public String toString() {
         return "Map [id="+id+", name=" + name + ", type=" + surname +", size="+ birthday +"]";
+    }
+
+    public int gastarDsa_coins(int precio){
+        int act=this.getDsa_coins();
+        int desp= act-precio;
+        if (desp>0){
+            this.setDsa_coins(desp);
+            return 0;
+        }
+        else {
+            return -1;
+        }
+
+
+    }
+    public Objeto compraObjeto(Objeto t){
+        int aff = gastarDsa_coins(t.getCoins());
+        if(aff==0){
+            this.compras.add(t);
+            return t;
+        }
+        else {
+            return null;
+        }
     }
 
 }

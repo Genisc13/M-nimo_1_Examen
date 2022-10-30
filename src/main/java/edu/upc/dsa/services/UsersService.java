@@ -1,8 +1,8 @@
 package edu.upc.dsa.services;
 
 
-import edu.upc.dsa.usersManager;
-import edu.upc.dsa.usersManagerImpl;
+import edu.upc.dsa.shopManager;
+import edu.upc.dsa.shopManagerImpl;
 import edu.upc.dsa.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,15 +15,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Api(value = "/maps", description = "Endpoint to Map Service")
-@Path("/maps")
+@Api(value = "/users", description = "Endpoint to User Service")
+@Path("/users")
 public class UsersService {
 
-    private usersManager mm;
+    private shopManager mm;
 
     public UsersService() {
-        this.mm = usersManagerImpl.getInstance();
-        if (mm.size()==0) {
+        this.mm = shopManagerImpl.getInstance();
+        if (mm.sizeUsers()==0) {
             this.mm.addUser("Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
             this.mm.addUser("Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
             this.mm.addUser("Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
@@ -33,15 +33,15 @@ public class UsersService {
     }
 
     @GET
-    @ApiOperation(value = "get all Maps", notes = "todos y cada uno de ellos")
+    @ApiOperation(value = "get all Users", notes = "todos y cada uno de ellos")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMaps() {
+    public Response getUsers() {
 
-        List<User> users = this.mm.findAll();
+        List<User> users = this.mm.findUsers();
 
         GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
         return Response.status(201).entity(entity).build()  ;
@@ -49,27 +49,27 @@ public class UsersService {
     }
 
     @GET
-    @ApiOperation(value = "get a Map", notes = "De locos")
+    @ApiOperation(value = "get a User", notes = "De locos")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
-            @ApiResponse(code = 404, message = "Map not found")
+            @ApiResponse(code = 404, message = "User not found")
     })
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMap(@PathParam("id") String id) {
+    public Response getUser(@PathParam("id") String id) {
         User t = this.mm.getUser(id);
         if (t == null) return Response.status(404).build();
         else  return Response.status(201).entity(t).build();
     }
 
     @DELETE
-    @ApiOperation(value = "delete a Map", notes = "Elimina un mapa")
+    @ApiOperation(value = "delete a User", notes = "Elimina un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Map not found")
+            @ApiResponse(code = 404, message = "User not found")
     })
     @Path("/{id}")
-    public Response deleteMap(@PathParam("id") String id) {
+    public Response deleteUser(@PathParam("id") String id) {
         User t = this.mm.getUser(id);
         if (t == null) return Response.status(404).build();
         else this.mm.deleteUser(id);
@@ -77,13 +77,13 @@ public class UsersService {
     }
 
     @PUT
-    @ApiOperation(value = "update a Map", notes = "Actualiza datos del mapa")
+    @ApiOperation(value = "update a User", notes = "Actualiza datos del Usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Map not found")
+            @ApiResponse(code = 404, message = "User not found")
     })
     @Path("/")
-    public Response updateMap(User user) {
+    public Response updateUser(User user) {
 
         User t = this.mm.updateUser(user);
 
@@ -95,7 +95,7 @@ public class UsersService {
 
 
     @POST
-    @ApiOperation(value = "create a new Map", notes = "crea un mapa")
+    @ApiOperation(value = "create a new User", notes = "crea un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response= User.class),
             @ApiResponse(code = 500, message = "Validation Error")
@@ -103,7 +103,7 @@ public class UsersService {
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newMap(User user) {
+    public Response newUser(User user) {
 
         if (user.getSurname()==null || user.getName()==null)  return Response.status(500).entity(user).build();
         this.mm.addUser(user);
