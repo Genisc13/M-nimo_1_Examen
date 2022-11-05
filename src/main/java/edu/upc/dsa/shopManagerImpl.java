@@ -15,7 +15,7 @@ public class shopManagerImpl implements shopManager {
     protected List<Objeto> objects;
     final static Logger logger = Logger.getLogger(shopManagerImpl.class);
 
-    private shopManagerImpl() {
+    public shopManagerImpl() {
         this.objects= new LinkedList<>();
         this.users = new LinkedList<>();
     }
@@ -56,16 +56,15 @@ public class shopManagerImpl implements shopManager {
     }
 
     public User getUser(String id) {
-        logger.info("getMap("+id+")");
+        logger.info("getUser("+id+")");
 
         for (User t: this.users) {
             if (t.getId().equals(id)) {
-                logger.info("getMap("+id+"): "+t);
+                logger.info("getUser("+id+"): "+t);
 
                 return t;
             }
         }
-
         logger.warn("not found " + id);
         return null;
     }
