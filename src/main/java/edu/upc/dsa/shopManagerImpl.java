@@ -70,11 +70,12 @@ public class shopManagerImpl implements shopManager {
         return null;
     }
 
+    @Override
     public List<User> findUsers() {
         users.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                return CharSequence.compare(o1.getName(), o2.getName());
+                return o1.getName().compareTo(o2.getName());
             }
         });
 

@@ -17,10 +17,6 @@ public class User {
 
     List<Objeto> compras;
 
-
-
-    static int lastId;
-
     public User() {
         this.id = RandomUtils.getId();
         this.compras= new LinkedList<Objeto>();
