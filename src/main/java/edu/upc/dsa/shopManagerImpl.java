@@ -31,6 +31,11 @@ public class shopManagerImpl implements shopManager {
 
         return ret;
     }
+    public int sizeObjetos(){
+        int ret=this.objects.size();
+        logger.info("size "+ ret);
+        return ret;
+    }
 
     public User addUser(User t) {
         logger.info("new User " + t);
@@ -96,27 +101,10 @@ public class shopManagerImpl implements shopManager {
         return objects;
     }
     @Override
-    public int buscarUser(String id){
-        boolean userencontrado=false;
-        int indiceUser=0;
-        for(int i = 0; !userencontrado || i<users.size(); i++) {
-            if (id.equals(users.get(i).getId())){
-                indiceUser=i;
-                userencontrado=true;
-            }
-        }
-        if (userencontrado){
-            return indiceUser;
-        }
-        else{
-            return -1;
-        }
-    }
-    @Override
     public Objeto buyObjeto(String name,String userId) {
         Objeto res = new Objeto();
-        int indiceUser=buscarUser(userId);
-        if(indiceUser!=-1) {
+        User user=getUser(userId);
+        if(user!=null) {
             boolean objetoencontrado = false;
             for (int i = 0; !objetoencontrado || i < objects.size(); i++) {
                 if (name.equals(objects.get(i).getName())) {
@@ -125,7 +113,7 @@ public class shopManagerImpl implements shopManager {
                 }
             }
             if (objetoencontrado) {
-                users.get(indiceUser).compraObjeto(res);
+                user.compraObjeto(res);
                 return res;
             } else {
                 return null;
@@ -137,9 +125,9 @@ public class shopManagerImpl implements shopManager {
 
     @Override
     public List<Objeto> userObjetos(String id) {
-        int indice= buscarUser(id);
-        if (indice!=-1){
-            return users.get(indice).getCompras();
+        User user= getUser(id);
+        if (user!=null){
+            return user.getCompras();
         }
         else {return null;}
     }

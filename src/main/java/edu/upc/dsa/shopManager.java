@@ -10,8 +10,6 @@ public interface shopManager {
 
     public User addUser(String name, String surname, String birthday,String electronic, String password);
     public User addUser(User t);
-
-    public int buscarUser(String id);
     public Objeto addObjeto(Objeto t);
     public User getUser(String id);
     public List<User> findUsers();
@@ -27,4 +25,5 @@ public interface shopManager {
     public User updateUser(User t);
 
     public int sizeUsers();
+    public int sizeObjetos();
 }
