@@ -18,12 +18,13 @@ public class User {
     List<Objeto> compras;
 
     public User() {
-        this.id = RandomUtils.getId();
+//        this.id = RandomUtils.getId();
         this.compras= new LinkedList<Objeto>();
     }
 
-    public User(String name, String surname, String birthday, String electronic, String password) {
+    public User(String id,String name, String surname, String birthday, String electronic, String password) {
         this();
+        this.setId(id);
         this.setSurname(surname);
         this.setName(name);
         this.setBirthday(birthday);
@@ -98,7 +99,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Map [id="+id+", name=" + name + ", type=" + surname +", size="+ birthday +"]";
+        return "User [id="+id+", name=" + name + ", surname=" + surname +", birthday="+ birthday +"]";
     }
 
     public int gastarDsa_coins(int precio){

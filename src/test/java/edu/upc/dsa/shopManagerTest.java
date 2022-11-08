@@ -14,9 +14,9 @@ public class shopManagerTest {
     @Before
     public void setUp() {
         sm = new shopManagerImpl();
-        this.sm.addUser("Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
-        this.sm.addUser("Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
-        this.sm.addUser("Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
+        this.sm.addUser("1","Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
+        this.sm.addUser("2","Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
+        this.sm.addUser("3","Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
 
         sm.addObjeto("B001", "Coca cola", 4);
         sm.addObjeto("C002", "Café amb gel", 7);
@@ -30,7 +30,7 @@ public class shopManagerTest {
     public void testgetUser(){
         Assert.assertEquals(3, this.sm.sizeUsers());
         Assert.assertEquals(4, this.sm.sizeObjetos());
-        User cuartoUser=this.sm.addUser("Jose","Pedro Jordel","03/03/2001","Jose.pedro@estudiantat.upc.edu","Joselito32");
+        User cuartoUser=this.sm.addUser("4","Jose","Pedro Jordel","03/03/2001","Jose.pedro@estudiantat.upc.edu","Joselito32");
         Assert.assertEquals(4, this.sm.sizeUsers());
         String Idcuarto= cuartoUser.getId();
         Assert.assertEquals(Idcuarto,sm.getUser(Idcuarto).getId());
@@ -74,7 +74,24 @@ public class shopManagerTest {
 
     @Test
     public void testbuyObjeto(){
+        Assert.assertEquals(3, this.sm.sizeUsers());
+        Assert.assertEquals(4, this.sm.sizeObjetos());
+        Objeto compra= this.sm.buyObjeto("A001","1");
+        Assert.assertEquals("A001",compra.getName());
+        Assert.assertEquals(1,sm.userObjetos("1").size());
+        Assert.assertEquals(48,sm.getUser("1").getDsa_coins());
+    }
 
+    @Test
+    public void testuserObjetos(){
+        Objeto compra= this.sm.buyObjeto("A001","1");
+        Assert.assertEquals("A001",compra.getName());
+        Objeto compra2= this.sm.buyObjeto("B001","1");
+        Assert.assertEquals("B001",compra2.getName());
+        Objeto compra3= this.sm.buyObjeto("A003","1");
+        Assert.assertEquals("A003",compra3.getName());
+        Assert.assertEquals(3,sm.userObjetos("1").size());
+        Assert.assertEquals(36,sm.getUser("1").getDsa_coins());
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface shopManager {
 
 
-    public User addUser(String name, String surname, String birthday,String electronic, String password);
+    public User addUser(String id,String name, String surname, String birthday,String electronic, String password);
     public User addUser(User t);
     public Objeto addObjeto(Objeto t);
     public User getUser(String id);

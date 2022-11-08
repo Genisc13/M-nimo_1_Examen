@@ -24,11 +24,10 @@ public class UsersService {
     public UsersService() {
         this.mm = shopManagerImpl.getInstance();
         if (mm.sizeUsers()==0) {
-            this.mm.addUser("Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
-            this.mm.addUser("Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
-            this.mm.addUser("Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
+            this.mm.addUser("1","Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
+            this.mm.addUser("2","Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
+            this.mm.addUser("3","Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
         }
-
 
     }
 

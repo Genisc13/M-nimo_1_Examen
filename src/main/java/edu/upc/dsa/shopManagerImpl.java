@@ -4,6 +4,7 @@ import edu.upc.dsa.models.Objeto;
 import edu.upc.dsa.models.User;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -52,8 +53,8 @@ public class shopManagerImpl implements shopManager {
         return t;
     }
 
-    public User addUser(String name, String surname, String birthday, String electronic, String password) {
-        return this.addUser(new User(name, surname, birthday,electronic,password));
+    public User addUser(String id,String name, String surname, String birthday, String electronic, String password) {
+        return this.addUser(new User(id,name, surname, birthday,electronic,password));
     }
 
     public Objeto addObjeto(String name, String description, int coins){
@@ -108,7 +109,7 @@ public class shopManagerImpl implements shopManager {
             boolean objetoencontrado = false;
             for (int i = 0; !objetoencontrado || i < objects.size(); i++) {
                 if (name.equals(objects.get(i).getName())) {
-                    res = objects.remove(i);
+                    res = objects.get(i);
                     objetoencontrado = true;
                 }
             }
