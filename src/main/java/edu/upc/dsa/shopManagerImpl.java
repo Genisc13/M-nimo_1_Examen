@@ -115,13 +115,16 @@ public class shopManagerImpl implements shopManager {
             users.sort(new Comparator<User>() {
                 @Override
                 public int compare(User o1, User o2) {
-                    return o1.getName().compareTo(o2.getName());
+                    int res=String.CASE_INSENSITIVE_ORDER.compare(o1.getSurname(), o2.getSurname());
+                    if(res ==0){
+                        res= String.CASE_INSENSITIVE_ORDER.compare(o1.getName(), o2.getName());
+                    }
+                    return res;
                 }
             });
-
 //        products.sort((o1, o2)-> Double.compare(o1.getPrice(), o2.getPrice()));
             return this.users;
-        }
+            }
         else{
             logger.warn("no hay usuarios");
             return null;

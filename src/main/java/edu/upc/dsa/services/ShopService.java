@@ -35,8 +35,6 @@ public class ShopService {
             mm.addObjeto("A001", "Donut", 2);
             mm.addObjeto("A003", "Croissant", 8);
         }
-
-
     }
 
     @GET
@@ -186,7 +184,7 @@ public class ShopService {
         return Response.status(201).build();
     }
     @PUT
-    @ApiOperation(value = "Hace el login", notes = "Actualiza datos del Objeto")
+    @ApiOperation(value = "el usuario compra el objeto", notes = "Hace que se pueda comprar el objeto")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 404, message = "not found")

@@ -43,14 +43,14 @@ public class shopManagerTest {
         List<User> lista=sm.findUsers();
         Assert.assertEquals(3,lista.size());
 
-        Assert.assertEquals("Juan", lista.get(0).getName());
-        Assert.assertEquals("Perez Salva", lista.get(0).getSurname());
+        Assert.assertEquals("Juan", lista.get(2).getName());
+        Assert.assertEquals("Perez Salva", lista.get(2).getSurname());
 
-        Assert.assertEquals("Lucas", lista.get(1).getName());
-        Assert.assertEquals("Naranjin Bicho", lista.get(1).getSurname());
+        Assert.assertEquals("Lucas", lista.get(0).getName());
+        Assert.assertEquals("Naranjin Bicho", lista.get(0).getSurname());
 
-        Assert.assertEquals("Oriol", lista.get(2).getName());
-        Assert.assertEquals("Perchas Garrido", lista.get(2).getSurname());
+        Assert.assertEquals("Oriol", lista.get(1).getName());
+        Assert.assertEquals("Perchas Garrido", lista.get(1).getSurname());
 
     }
 
@@ -92,6 +92,11 @@ public class shopManagerTest {
         Assert.assertEquals("A003",compra3.getName());
         Assert.assertEquals(3,sm.userObjetos("1").size());
         Assert.assertEquals(36,sm.getUser("1").getDsa_coins());
+    }
+    @Test
+    public void testloginUser(){
+        User logero=sm.loginUser("lucas.naranjin@estudiantat.upc.edu","Acojonante23");
+        Assert.assertEquals("Lucas",logero.getName());
     }
 
 }
