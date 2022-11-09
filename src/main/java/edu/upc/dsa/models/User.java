@@ -99,7 +99,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id="+id+", name=" + name + ", surname=" + surname +", birthday="+ birthday +"]";
+        return "User [id="+id+", name=" + name + ", surname=" + surname +", birthday="+ birthday +",electronic="+ electronic+", password="+password+",coins="+dsa_coins+"]";
     }
 
     public int gastarDsa_coins(int precio){
@@ -110,6 +110,7 @@ public class User {
             return 0;
         }
         else {
+            this.setDsa_coins(act);
             return -1;
         }
 
