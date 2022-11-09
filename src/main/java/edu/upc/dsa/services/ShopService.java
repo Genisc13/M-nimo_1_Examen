@@ -29,6 +29,13 @@ public class ShopService {
             this.mm.addUser("2","Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
             this.mm.addUser("3","Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
         }
+        if (mm.sizeObjetos()==0){
+            mm.addObjeto("B001", "Coca cola", 4);
+            mm.addObjeto("C002", "Café amb gel", 7);
+            mm.addObjeto("A001", "Donut", 2);
+            mm.addObjeto("A003", "Croissant", 8);
+        }
+
 
     }
 
@@ -47,6 +54,35 @@ public class ShopService {
         return Response.status(201).entity(entity).build()  ;
 
     }
+    @GET
+    @ApiOperation(value = "get all Objects", notes = "ordenados ascendentemente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
+    })
+    @Path("/objects")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjects() {
+
+        List<Objeto> objetos = this.mm.globalObjetos();
+        GenericEntity<List<Objeto>> entity = new GenericEntity<List<Objeto>>(objetos) {};
+        return Response.status(201).entity(entity).build()  ;
+
+    }
+    @GET
+    @ApiOperation(value = "Da los objetos del usuario", notes = "Objetos de usuario")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
+    })
+    @Path("/user/objects/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjects(@PathParam("id") String id) {
+
+        List<Objeto> objetos = this.mm.userObjetos(id);
+        GenericEntity<List<Objeto>> entity = new GenericEntity<List<Objeto>>(objetos) {};
+        return Response.status(201).entity(entity).build()  ;
+
+    }
+
 
     @GET
     @ApiOperation(value = "get a User", notes = "Da un usuario según su id")
@@ -65,7 +101,7 @@ public class ShopService {
     @GET
     @ApiOperation(value = "get a Object", notes = "Da un objeto segun su nombre")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 201, message = "Successful", response = Objeto.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
@@ -133,6 +169,34 @@ public class ShopService {
 
         if (t == null) return Response.status(404).build();
 
+        return Response.status(201).build();
+    }
+    @PUT
+    @ApiOperation(value = "Hace el login", notes = "Actualiza datos del Objeto")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 404, message = "not found")
+    })
+
+    @Path("/user/login/{correo}/{password}")
+    public Response loginUsuario( @PathParam("correo") String correo,@PathParam("password") String password) {
+
+        User t = this.mm.loginUser(correo,password);
+        if (t == null) return Response.status(404).build();
+        return Response.status(201).build();
+    }
+    @PUT
+    @ApiOperation(value = "Hace el login", notes = "Actualiza datos del Objeto")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 404, message = "not found")
+    })
+
+    @Path("/user/buy/{id}/{name}")
+    public Response compraObjeto( @PathParam("id") String id,@PathParam("name") String name) {
+
+        Objeto t = this.mm.buyObjeto(name,id);
+        if (t == null) return Response.status(404).build();
         return Response.status(201).build();
     }
 
