@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Objeto;
 import edu.upc.dsa.models.User;
 
@@ -10,7 +11,7 @@ public interface shopManager {
 
     public User addUser(String id,String name, String surname, String birthday,String electronic, String password);
     public User addUser(User t);
-    public User loginUser(String correo, String password);
+    public User loginUser(Credentials credentials);
     public Objeto addObjeto(Objeto t);
     public User getUser(String id);
 

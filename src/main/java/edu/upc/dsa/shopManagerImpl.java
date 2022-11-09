@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Objeto;
 import edu.upc.dsa.models.User;
 
@@ -26,17 +27,19 @@ public class shopManagerImpl implements shopManager {
         return instance;
     }
 
-    public User loginUser(String correo, String password){
+    public User loginUser(Credentials credentials){
+        String correo=credentials.getCorreo();
+        String password=credentials.getPassword();
         for (User t: this.users){
-            if (t.getElectronic().equals(correo)){
-                if(t.getPassword().equals(password)){
+            if (t.getCredentials().getCorreo().equals(correo)){
+                if(t.getCredentials().getPassword().equals(password)){
                     logger.info("El correo y la contraseña coinciden, bienvenido");
                     return t;
                 }
                 break;
             }
         }
-        logger.warn("No se ha encontrado a ningun usuario registrado con esta combinación " + correo + "y "+password);
+        logger.warn("No se ha encontrado a ningun usuario registrado con esta combinación " + correo + " y "+password);
         return null;
     }
 
@@ -55,12 +58,13 @@ public class shopManagerImpl implements shopManager {
     public User addUser(User t) {
         logger.info("new User " + t);
         for (User l: this.users){
-            if (l.getElectronic().equals(t.getElectronic())){
+            if (l.getCredentials().getCorreo().equals(t.getCredentials().getCorreo())){
                 logger.warn("El usuario con este correo ya fue registrado");
                 return null;
             }
         }
-        this.users.add (t);
+        t.setDsa_coins(50);
+        this.users.add(t);
         logger.info("new User added");
         return t;
     }
@@ -138,7 +142,7 @@ public class shopManagerImpl implements shopManager {
             objects.sort(new Comparator<Objeto>() {
                 @Override
                 public int compare(Objeto o1, Objeto o2) {
-                    return Double.compare(o1.getCoins(), o2.getCoins());
+                    return Double.compare(o2.getCoins(), o1.getCoins());
                 }
             });
 
@@ -234,8 +238,7 @@ public class shopManagerImpl implements shopManager {
             t.setSurname(p.getSurname());
             t.setName(p.getName());
             t.setBirthday(p.getBirthday());
-            t.setElectronic(p.getElectronic());
-            t.setPassword(p.getPassword());
+            t.setCredentials(p.getCredentials());
             t.setDsa_coins(p.getDsa_coins());
 
             logger.info(t+" updated ");

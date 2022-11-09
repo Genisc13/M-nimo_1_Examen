@@ -1,6 +1,7 @@
 package edu.upc.dsa.services;
 
 
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Objeto;
 import edu.upc.dsa.shopManager;
 import edu.upc.dsa.shopManagerImpl;
@@ -169,20 +170,7 @@ public class ShopService {
 
         return Response.status(201).build();
     }
-    @PUT
-    @ApiOperation(value = "Hace el login", notes = "Actualiza datos del Objeto")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "not found")
-    })
 
-    @Path("/user/login/{correo}/{password}")
-    public Response loginUsuario( @PathParam("correo") String correo,@PathParam("password") String password) {
-
-        User t = this.mm.loginUser(correo,password);
-        if (t == null) return Response.status(404).build();
-        return Response.status(201).build();
-    }
     @PUT
     @ApiOperation(value = "el usuario compra el objeto", notes = "Hace que se pueda comprar el objeto")
     @ApiResponses(value = {
@@ -198,6 +186,20 @@ public class ShopService {
         return Response.status(201).build();
     }
 
+    @POST
+    @ApiOperation(value = "Hace el login", notes = "Pide nombre y contraseña")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful",response = Credentials.class),
+            @ApiResponse(code = 500, message = "Credenciales incorrectas")
+    })
+
+    @Path("/user/login")
+    public Response loginUsuario(Credentials credentials) {
+
+        User t = this.mm.loginUser(credentials);
+        if (t == null) return Response.status(500).entity(credentials).build();
+        return Response.status(201).entity(credentials).build();
+    }
 
     @POST
     @ApiOperation(value = "create a new User", notes = "crea un usuario")
@@ -209,9 +211,8 @@ public class ShopService {
     @Path("/user")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response newUser(User user) {
-
-        if (user.getSurname()==null || user.getName()==null)  return Response.status(500).entity(user).build();
-        this.mm.addUser(user);
+        User m= this.mm.addUser(user);
+        if (m==null ||user.getSurname()==null || user.getName()==null )  return Response.status(500).entity(user).build();
         return Response.status(201).entity(user).build();
     }
     @POST

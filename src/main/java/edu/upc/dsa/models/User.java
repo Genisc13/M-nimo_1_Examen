@@ -11,10 +11,8 @@ public class User {
     String name;
     String surname;
     String birthday;
-    String electronic;
-    String password;
+    Credentials credentials;
     int dsa_coins;
-
     List<Objeto> compras;
 
     public User() {
@@ -28,8 +26,7 @@ public class User {
         this.setSurname(surname);
         this.setName(name);
         this.setBirthday(birthday);
-        this.setElectronic(electronic);
-        this.setPassword(password);
+        this.setCredentials(new Credentials(electronic,password));
         this.setDsa_coins(50);
         this.compras=new LinkedList<Objeto>();
     }
@@ -49,21 +46,6 @@ public class User {
         this.dsa_coins = dsa_coins;
     }
 
-    public String getElectronic() {
-        return electronic;
-    }
-
-    public void setElectronic(String electronic) {
-        this.electronic = electronic;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getId() {
         return this.id;
@@ -96,10 +78,18 @@ public class User {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
+    }
+
 
     @Override
     public String toString() {
-        return "User [id="+id+", name=" + name + ", surname=" + surname +", birthday="+ birthday +",electronic="+ electronic+", password="+password+",coins="+dsa_coins+"]";
+        return "User [id="+id+", name=" + name + ", surname=" + surname +", birthday="+ birthday +",coins= "+dsa_coins+"]";
     }
 
     public int gastarDsa_coins(int precio){

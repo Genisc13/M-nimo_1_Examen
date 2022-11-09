@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Objeto;
 import edu.upc.dsa.models.User;
 import org.junit.After;
@@ -58,18 +59,17 @@ public class shopManagerTest {
     public void testGlobalObjetos(){
 
         List<Objeto> objetos= sm.globalObjetos();
-        Assert.assertEquals("A001",objetos.get(0).getName());
-        Assert.assertEquals("A001", objetos.get(0).getName());
-        Assert.assertEquals(2, objetos.get(0).getCoins(), 0);
+        Assert.assertEquals("A001",objetos.get(3).getName());
+        Assert.assertEquals(2, objetos.get(3).getCoins(), 0);
 
-        Assert.assertEquals("B001", objetos.get(1).getName());
-        Assert.assertEquals(4, objetos.get(1).getCoins(), 0);
+        Assert.assertEquals("B001", objetos.get(2).getName());
+        Assert.assertEquals(4, objetos.get(2).getCoins(), 0);
 
-        Assert.assertEquals("C002", objetos.get(2).getName());
-        Assert.assertEquals(7, objetos.get(2).getCoins(), 0);
+        Assert.assertEquals("C002", objetos.get(1).getName());
+        Assert.assertEquals(7, objetos.get(1).getCoins(), 0);
 
-        Assert.assertEquals("A003", objetos.get(3).getName());
-        Assert.assertEquals(8, objetos.get(3).getCoins(), 0);
+        Assert.assertEquals("A003", objetos.get(0).getName());
+        Assert.assertEquals(8, objetos.get(0).getCoins(), 0);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class shopManagerTest {
     }
     @Test
     public void testloginUser(){
-        User logero=sm.loginUser("lucas.naranjin@estudiantat.upc.edu","Acojonante23");
+        User logero=sm.loginUser(new Credentials("lucas.naranjin@estudiantat.upc.edu","Acojonante23"));
         Assert.assertEquals("Lucas",logero.getName());
     }
 
