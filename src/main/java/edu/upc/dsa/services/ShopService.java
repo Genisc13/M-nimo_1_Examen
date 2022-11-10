@@ -1,10 +1,10 @@
 package edu.upc.dsa.services;
 
 
-import edu.upc.dsa.models.Credentials;
-import edu.upc.dsa.models.Objeto;
-import edu.upc.dsa.shopManager;
-import edu.upc.dsa.shopManagerImpl;
+import edu.upc.dsa.models.LevelResults;
+import edu.upc.dsa.models.Partida;
+import edu.upc.dsa.juegoManager;
+import edu.upc.dsa.juegoManagerImpl;
 import edu.upc.dsa.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,20 +21,20 @@ import java.util.List;
 @Path("/shop")
 public class ShopService {
 
-    private shopManager mm;
+    private juegoManager mm;
 
     public ShopService() {
-        this.mm = shopManagerImpl.getInstance();
+        this.mm = juegoManagerImpl.getInstance();
         if (mm.sizeUsers()==0) {
-            this.mm.addUser("1","Juan","Perez Salva", "03/02/2001","juan.perez@estudiantat.upc.edu","Pedro");
-            this.mm.addUser("2","Lucas","Naranjin Bicho", "01/07/2000","lucas.naranjin@estudiantat.upc.edu","Acojonante23");
-            this.mm.addUser("3","Oriol","Perchas Garrido", "03/10/1999","oriol.perchas@estudiantat.upc.edu","Elpenao");
+            this.mm.addUser("1","Juan","Perez Salva");
+            this.mm.addUser("2","Lucas","Naranjin Bicho");
+            this.mm.addUser("3","Oriol","Perchas Garrido");
         }
-        if (mm.sizeObjetos()==0){
-            mm.addObjeto("B001", "Coca cola", 4);
-            mm.addObjeto("C002", "Café amb gel", 7);
-            mm.addObjeto("A001", "Donut", 2);
-            mm.addObjeto("A003", "Croissant", 8);
+        if (mm.sizePartidas()==0){
+            mm.crearPartida("1", "Nivel medio", 4);
+            mm.crearPartida("2", "Nivel dificil", 8);
+            mm.crearPartida("3", "Nivel medio", 5);
+            mm.crearPartida("4", "Nivel facil", 3);
         }
     }
 
@@ -56,28 +56,28 @@ public class ShopService {
     @GET
     @ApiOperation(value = "get all Objects", notes = "ordenados ascendentemente")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Partida.class, responseContainer="List"),
     })
     @Path("/objects")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getObjects() {
 
-        List<Objeto> objetos = this.mm.globalObjetos();
-        GenericEntity<List<Objeto>> entity = new GenericEntity<List<Objeto>>(objetos) {};
+        List<Partida> partidas = this.mm.globalPartidas();
+        GenericEntity<List<Partida>> entity = new GenericEntity<List<Partida>>(partidas) {};
         return Response.status(201).entity(entity).build()  ;
 
     }
     @GET
     @ApiOperation(value = "Da los objetos del usuario", notes = "Objetos de usuario")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Objeto.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Partida.class, responseContainer="List"),
     })
     @Path("/user/objects/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getObjects(@PathParam("id") String id) {
 
-        List<Objeto> objetos = this.mm.userObjetos(id);
-        GenericEntity<List<Objeto>> entity = new GenericEntity<List<Objeto>>(objetos) {};
+        List<Partida> partidas = this.mm.userPartidas(id);
+        GenericEntity<List<Partida>> entity = new GenericEntity<List<Partida>>(partidas) {};
         return Response.status(201).entity(entity).build()  ;
 
     }
@@ -100,14 +100,14 @@ public class ShopService {
     @GET
     @ApiOperation(value = "get a Object", notes = "Da un objeto segun su nombre")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Objeto.class),
+            @ApiResponse(code = 201, message = "Successful", response = Partida.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
     @Path("/object/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getObjeto(@PathParam("name") String name) {
-        Objeto t = this.mm.getObjeto(name);
+        Partida t = this.mm.getPartida(name);
         if (t == null) return Response.status(404).build();
         else  return Response.status(201).entity(t).build();
     }
@@ -134,9 +134,9 @@ public class ShopService {
     })
     @Path("/object/{name}")
     public Response deleteObjeto(@PathParam("name") String name) {
-        Objeto t = this.mm.getObjeto(name);
+        Partida t = this.mm.getPartida(name);
         if (t == null) return Response.status(404).build();
-        else this.mm.deleteObjeto(name);
+        else this.mm.deletePartida(name);
         return Response.status(201).build();
     }
 
@@ -162,43 +162,13 @@ public class ShopService {
             @ApiResponse(code = 404, message = "Objeto not found")
     })
     @Path("/object")
-    public Response updateObjeto(Objeto objeto) {
+    public Response updateObjeto(Partida partida) {
 
-        Objeto t = this.mm.updateObjeto(objeto);
+        Partida t = this.mm.updatePartida(partida);
 
         if (t == null) return Response.status(404).build();
 
         return Response.status(201).build();
-    }
-
-    @PUT
-    @ApiOperation(value = "el usuario compra el objeto", notes = "Hace que se pueda comprar el objeto")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "not found")
-    })
-
-    @Path("/user/buy/{id}/{name}")
-    public Response compraObjeto( @PathParam("id") String id,@PathParam("name") String name) {
-
-        Objeto t = this.mm.buyObjeto(name,id);
-        if (t == null) return Response.status(404).build();
-        return Response.status(201).build();
-    }
-
-    @POST
-    @ApiOperation(value = "Hace el login", notes = "Pide nombre y contraseña")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful",response = Credentials.class),
-            @ApiResponse(code = 500, message = "Credenciales incorrectas")
-    })
-
-    @Path("/user/login")
-    public Response loginUsuario(Credentials credentials) {
-
-        User t = this.mm.loginUser(credentials);
-        if (t == null) return Response.status(500).entity(credentials).build();
-        return Response.status(201).entity(credentials).build();
     }
 
     @POST
@@ -224,11 +194,11 @@ public class ShopService {
 
     @Path("/object")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newObjeto(Objeto objeto) {
+    public Response newObjeto(Partida partida) {
 
-        if (objeto.getName()==null || objeto.getDescription()==null || objeto.getCoins()<=0)  return Response.status(500).entity(objeto).build();
-        this.mm.addObjeto(objeto);
-        return Response.status(201).entity(objeto).build();
+        if (partida.getId()==null || partida.getDescription()==null || partida.getNum_levels()<=0)  return Response.status(500).entity(partida).build();
+        this.mm.crearPartida(partida);
+        return Response.status(201).entity(partida).build();
     }
 
 }
