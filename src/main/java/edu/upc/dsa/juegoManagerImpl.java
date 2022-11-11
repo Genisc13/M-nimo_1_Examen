@@ -4,22 +4,20 @@ import edu.upc.dsa.models.LevelResults;
 import edu.upc.dsa.models.Partida;
 import edu.upc.dsa.models.User;
 
-import java.util.Comparator;
+import java.util.*;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.apache.log4j.Logger;
 
 public class juegoManagerImpl implements juegoManager {
     private static juegoManager instance;
-    protected List<User> users;
+    protected HashMap<String,User> users;
 
     protected List<Partida> partidas;
     final static Logger logger = Logger.getLogger(juegoManagerImpl.class);
 
     public juegoManagerImpl() {
         this.partidas = new LinkedList<>();
-        this.users = new LinkedList<>();
+        this.users = new HashMap<>();
     }
 
     public static juegoManager getInstance() {
@@ -41,13 +39,11 @@ public class juegoManagerImpl implements juegoManager {
 
     public User addUser(User t) {
         logger.info("new User " + t);
-        for (User l: this.users){
-            if (l.getName().equals(t.getName())){
-                logger.warn("El usuario con este nombre ya fue registrado");
-                return null;
-            }
+        if (users.containsValue(t.getName())){
+            logger.warn("El usuario con este nombre ya fue registrado");
+            return null;
         }
-        this.users.add(t);
+        this.users.put(t.getId(),t);
         logger.info("new User added");
         return t;
     }
@@ -187,16 +183,14 @@ public class juegoManagerImpl implements juegoManager {
     }
     public User getUser(String id) {
         logger.info("getUser("+id+")");
-
-        for (User t: this.users) {
-            if (t.getId().equals(id)) {
-                logger.info("getUser("+id+"): "+t);
-
-                return t;
-            }
+        if(users.containsKey(id)) {
+            logger.info("getUser(" + id + "): " + this.users.get(id));
+            return this.users.get(id);
         }
-        logger.warn("not found " + id);
-        return null;
+        else {
+            logger.warn("not found " + id);
+            return null;
+        }
     }
 
     public Partida getPartida(String name) {
@@ -217,7 +211,10 @@ public class juegoManagerImpl implements juegoManager {
     public List<User> findUsers() {
 
         if (users.size()!=0) {
-            users.sort(new Comparator<User>() {
+
+            Collection<User> list= users.values();
+            List <User> lista= new ArrayList<>(list);
+            lista.sort(new Comparator<User>() {
                 @Override
                 public int compare(User o1, User o2) {
                     int res=String.CASE_INSENSITIVE_ORDER.compare(o1.getSurname(), o2.getSurname());
@@ -228,7 +225,7 @@ public class juegoManagerImpl implements juegoManager {
                 }
             });
 //        products.sort((o1, o2)-> Double.compare(o1.getPrice(), o2.getPrice()));
-            return this.users;
+            return lista;
             }
         else{
             logger.warn("no hay usuarios");

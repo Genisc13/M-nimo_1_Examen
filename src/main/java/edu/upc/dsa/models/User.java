@@ -112,6 +112,8 @@ public class User {
     public LevelResults pasarLevel(int score,String date){
         if(this.getPartida_actual()!=null) {
             if (this.getActual_level() + 1 <= this.getPartida_actual().num_levels) {
+                this.setActual_level(this.getActual_level()+1);
+                this.setActual_score(this.getActual_score()+score);
                 LevelResults completado = new LevelResults(this.getPartida_actual().getId(), this.getActual_level(), score, date);
                 GameResults esto = this.getGameResults(this.partida_actual.getId());
                 esto.getResultados().add(completado);

@@ -78,8 +78,9 @@ public class juegoManagerTest {
         Assert.assertEquals(4, this.sm.sizePartidas());
 
         Partida empezada= this.sm.iniciarPartida("1","1");
-        Assert.assertEquals(1,sm.userPartidas("1").size());
+        Assert.assertEquals(1,sm.getUser("1").getResultados().size());
         Assert.assertEquals(50,sm.getUser("1").getActual_score());
+        Assert.assertEquals(1,sm.getUser("1").getActual_level());
     }
 
     @Test
