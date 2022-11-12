@@ -6,6 +6,9 @@ public class GameResults {
     List<LevelResults> resultados;
     int final_score;
 
+    public GameResults(){
+        resultados=new LinkedList<>();
+    }
     public GameResults(String id, int final_score) {
         this.setId(id);
         this.setFinal_score(final_score);
