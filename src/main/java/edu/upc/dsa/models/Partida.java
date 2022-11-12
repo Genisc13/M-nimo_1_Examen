@@ -53,4 +53,9 @@ public class Partida {
         this.num_levels = num_levels;
     }
 
+    @Override
+    public String toString() {
+        return "User [id="+id+", description=" + description + ", num_levels=" + num_levels +"]";
+    }
+
 }

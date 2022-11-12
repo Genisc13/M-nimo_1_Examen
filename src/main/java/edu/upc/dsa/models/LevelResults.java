@@ -49,4 +49,10 @@ public class LevelResults {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "User [id="+id_partida+", level=" + level + ", num_points=" + points+", date= "+ date +"]";
+    }
+
 }

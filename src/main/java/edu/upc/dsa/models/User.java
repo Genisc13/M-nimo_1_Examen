@@ -114,7 +114,7 @@ public class User {
             if (this.getActual_level() + 1 <= this.getPartida_actual().num_levels) {
                 this.setActual_level(this.getActual_level()+1);
                 this.setActual_score(this.getActual_score()+score);
-                LevelResults completado = new LevelResults(this.getPartida_actual().getId(), this.getActual_level(), score, date);
+                LevelResults completado = new LevelResults(this.getPartida_actual().getId(), this.getActual_level()-1, score, date);
                 GameResults esto = this.getGameResults(this.partida_actual.getId());
                 esto.getResultados().add(completado);
                 esto.aumentar_score(score);
@@ -124,7 +124,6 @@ public class User {
                 GameResults esto = this.getGameResults(this.partida_actual.getId());
                 esto.getResultados().add(completado);
                 esto.setFinal_score(100);
-                this.acabarPartida();
                 return completado;
             }
         }
@@ -133,7 +132,7 @@ public class User {
         }
     }
     public Partida acabarPartida(){
-        if(this.getPartida_actual()==null) {
+        if(this.getPartida_actual()!=null) {
             Partida acabada = this.getPartida_actual();
             this.setPartida_actual(null);
             this.partidas.add(acabada);
@@ -145,34 +144,10 @@ public class User {
     }
     public GameResults getGameResults(String id_partida){
         for (GameResults t: this.resultados) {
-            if (t.getId().equals(id)) {
+            if (t.getId().equals(id_partida)) {
                 return t;
             }
         }
         return null;
     }
-
-    public int gastarDsa_coins(int precio){
-        int act=this.getActual_score();
-        int desp= act-precio;
-        if (desp>0){
-            this.setActual_score(desp);
-            return 0;
-        }
-        else {
-            this.setActual_score(act);
-            return -1;
-        }
-    }
-    public Partida compraObjeto(Partida t){
-        int aff = gastarDsa_coins(t.getNum_levels());
-        if(aff==0){
-            this.partidas.add(t);
-            return t;
-        }
-        else {
-            return null;
-        }
-    }
-
 }

@@ -19,11 +19,11 @@ public interface juegoManager {
     public Partida iniciarPartida(String id_partida,String user_id);
     public int actualLevel(String user_id);
     public int actual_score(String user_id);
-    public void level_passed(String user_id,int score,String date);
+    public LevelResults level_passed(String user_id,int score,String date);
     public Partida acaba_partida(User usuario);
     public List<User> usuarios_partida(Partida id_partida);
     public List<LevelResults> resultadosPartidaUsuario(String id_partida, String user_id);
-    public List<Partida> userPartidas(String id);
+    public List<Partida> userPartidas(String user_id);
     public List<Partida> globalPartidas();
     public void deleteUser(String id);
     public void deletePartida(String name);

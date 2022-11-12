@@ -37,7 +37,7 @@ public class GameResults {
     }
     public int aumentar_score(int i){
         int act=this.getFinal_score();
-        int desp= act-i;
+        int desp= act+i;
         if (desp>0){
             this.setFinal_score(desp);
             return 0;
@@ -46,5 +46,9 @@ public class GameResults {
             this.setFinal_score(act);
             return -1;
         }
+    }
+    @Override
+    public String toString() {
+        return "User [id="+id+", final_score=" + final_score +"]";
     }
 }

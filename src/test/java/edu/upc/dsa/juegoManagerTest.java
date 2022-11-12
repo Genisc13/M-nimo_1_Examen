@@ -56,23 +56,6 @@ public class juegoManagerTest {
     }
 
     @Test
-    public void testGlobalPartidas(){
-
-        List<Partida> partidas = sm.globalPartidas();
-        Assert.assertEquals("A001", partidas.get(3).getId());
-        Assert.assertEquals(2, partidas.get(3).getNum_levels(), 0);
-
-        Assert.assertEquals("B001", partidas.get(2).getId());
-        Assert.assertEquals(4, partidas.get(2).getNum_levels(), 0);
-
-        Assert.assertEquals("C002", partidas.get(1).getId());
-        Assert.assertEquals(7, partidas.get(1).getNum_levels(), 0);
-
-        Assert.assertEquals("A003", partidas.get(0).getId());
-        Assert.assertEquals(8, partidas.get(0).getNum_levels(), 0);
-    }
-
-    @Test
     public void testiniciarPartida(){
         Assert.assertEquals(3, this.sm.sizeUsers());
         Assert.assertEquals(4, this.sm.sizePartidas());
@@ -89,7 +72,62 @@ public class juegoManagerTest {
         this.sm.level_passed("1",12,"3/2/2004");
         Assert.assertEquals(2,sm.actualLevel("1"));
         Assert.assertEquals(62,sm.actual_score("1"));
+        this.sm.level_passed("1",20,"3/2/2004");
+        Assert.assertEquals(3,sm.actualLevel("1"));
+        Assert.assertEquals(82,sm.actual_score("1"));
+        this.sm.level_passed("1",15,"3/2/2004");
+        Assert.assertEquals(4,sm.actualLevel("1"));
+        Assert.assertEquals(97,sm.actual_score("1"));
+        this.sm.level_passed("1",12,"3/2/2004");
+        Assert.assertEquals(null,sm.getUser("1").getPartida_actual());
+    }
+    @Test
+    public void resultados_partidaUser(){
+        Partida empezada= this.sm.iniciarPartida("1","1");
+        this.sm.level_passed("1",12,"3/2/2004");
+        Assert.assertEquals(2,sm.actualLevel("1"));
+        Assert.assertEquals(62,sm.actual_score("1"));
+        this.sm.level_passed("1",20,"3/2/2004");
+        Assert.assertEquals(3,sm.actualLevel("1"));
+        Assert.assertEquals(82,sm.actual_score("1"));
+        this.sm.level_passed("1",15,"3/5/2004");
+        Assert.assertEquals(4,sm.actualLevel("1"));
+        Assert.assertEquals(97,sm.actual_score("1"));
+        this.sm.level_passed("1",12,"3/2/2005");
+        Assert.assertEquals(null,sm.getUser("1").getPartida_actual());
+        List<LevelResults> lista = sm.resultadosPartidaUsuario("1","1");
+        Assert.assertEquals(4,lista.size());
     }
 
+    @Test
+    public void cosultaUsuariosjuego(){
+        this.sm.iniciarPartida("1","1");
+        this.sm.iniciarPartida("1","2");
+        this.sm.iniciarPartida("1","3");
+        this.sm.level_passed("2",24,"3/2/2021");
+        this.sm.level_passed("1",20,"9/3/2000");
+        this.sm.level_passed("3",30,"7/5/2020");
+        List<User> usuarios=sm.usuarios_partida(sm.getPartida("1"));
+        Assert.assertEquals(3,usuarios.size());
+        Assert.assertEquals("3",usuarios.get(0).getId());
+        Assert.assertEquals("2",usuarios.get(1).getId());
+        Assert.assertEquals("1",usuarios.get(2).getId());
+    }
+    @Test
+    public void cosultaPartidasTerminadas(){
+        this.sm.iniciarPartida("1","1");
+        this.sm.level_passed("1",20,"7/3/2000");
+        this.sm.level_passed("1",10,"8/3/2000");
+        this.sm.level_passed("1",25,"10/3/2000");
+        this.sm.level_passed("1",2,"9/4/2000");
+        List<Partida> partidas=this.sm.userPartidas("1");
+        Assert.assertEquals(1,partidas.size());
+        this.sm.iniciarPartida("4","1");
+        this.sm.level_passed("1",20,"7/6/2000");
+        this.sm.level_passed("1",10,"8/8/2000");
+        this.sm.level_passed("1",25,"10/9/2000");
+        partidas=this.sm.userPartidas("1");
+        Assert.assertEquals(2,partidas.size());
+    }
 
 }

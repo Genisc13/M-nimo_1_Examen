@@ -1,3 +1,7 @@
-PARTE I
+Parte I
+Hecha la interficie y la implementación, los tests se han hecho y se ha comprobado el correcto funcionamiento de los metodos
+pedidos en el examen
 
-Hecha toda la implementación y puestos todos los metodos en la interficie, falta hacer el test de 2 funciones y el REST API
+Parte II
+Hecho el Service y a la espera de comprovar el funcionamiento, por alguna razón me da un error en el que no me puede construir
+las listas de los objetos que le he puesto

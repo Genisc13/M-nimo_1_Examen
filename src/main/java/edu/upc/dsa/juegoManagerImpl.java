@@ -36,7 +36,7 @@ public class juegoManagerImpl implements juegoManager {
         logger.info("size "+ ret);
         return ret;
     }
-
+    @Override
     public User addUser(User t) {
         logger.info("new User " + t);
         if (users.containsValue(t.getName())){
@@ -71,11 +71,13 @@ public class juegoManagerImpl implements juegoManager {
     //indicar el error. Un jugador SÓLO puede estar en una partida al mismo
     //tiempo. En caso que el jugador ya tenga una partida activa, se deberá
     //indicar el error.
+    @Override
     public Partida iniciarPartida(String id_partida,String user_id){
         User iniciador= this.getUser(user_id);
         Partida empezada = iniciador.iniciarPartida(getPartida(id_partida));
         if (empezada!=null){
             logger.info("La partida se pudo empezar correctamente");
+            this.getPartida(id_partida).getUsuarios().add(iniciador);
             return empezada;
         }
         else {
@@ -101,20 +103,33 @@ public class juegoManagerImpl implements juegoManager {
     //usuario esté en el último nivel, se incrementará la puntuación acumulada
     //en 100 puntos y la partida finalizará. En caso que el usuario no exista o
     //no esté en una partida en curso, se deberá indicar el error.
-    public void level_passed(String user_id,int score,String date){
+    @Override
+    public LevelResults level_passed(String user_id,int score,String date){
         User pasador= this.getUser(user_id);
         LevelResults res= pasador.pasarLevel(score,date);
         if (res == null){
             logger.warn("No se ha podido pasar de nivel, quizas no habia una partida actual");
+            return null;
         }
         else{
             logger.info("Se ha podido pasar de nivel correctamente");
+            if (res.getLevel()==pasador.getPartida_actual().getNum_levels()){
+                Partida terminada= this.acaba_partida(pasador);
+                if(terminada!=null) {
+                    return res;
+                }
+                else {
+                    return null;
+                }
+            }
+            return res;
         }
 
     }
     //Finalizar partida. Se indica que un determinado usuario ha finalizado la
     //partida actual. En caso que el usuario no exista o no esté en una partida
     //en curso de deberá indicar el error
+    @Override
     public Partida acaba_partida(User usuario){
         User usuari=this.getUser(usuario.getId());
         if(usuari==null){
@@ -129,10 +144,12 @@ public class juegoManagerImpl implements juegoManager {
             }
             else{
                 logger.info("se ha acabado la partida correctamente");
+                acabada.getUsuarios().remove(usuari);
                 return acabada;
             }
         }
     }
+    @Override
     public List<User> usuarios_partida(Partida partida){
         Partida partit=this.getPartida(partida.getId());
         List<User> lista=partit.getUsuarios();
@@ -147,8 +164,8 @@ public class juegoManagerImpl implements juegoManager {
     //- Consulta de las partidas en las que ha participado un usuario. En
     //caso que el usuario no exista se deberá indicar un error.
     @Override
-    public List<Partida> userPartidas(String id) {
-        User user= getUser(id);
+    public List<Partida> userPartidas(String user_id) {
+        User user= getUser(user_id);
         if (user!=null){
             logger.info("found"+ user.getPartidas());
             return user.getPartidas();
@@ -163,6 +180,7 @@ public class juegoManagerImpl implements juegoManager {
     //5, date: dd-mm-aaaa}, {level:2, points:15, date: dd-mm-aaaa}, {level3:
     //points: 20, date: dd-mm-aaaa}]
 
+    @Override
     public List<LevelResults> resultadosPartidaUsuario(String id_partida, String user_id){
         User usuario= this.getUser(user_id);
         if (usuario==null){
@@ -181,6 +199,7 @@ public class juegoManagerImpl implements juegoManager {
             }
         }
     }
+    @Override
     public User getUser(String id) {
         logger.info("getUser("+id+")");
         if(users.containsKey(id)) {
@@ -192,7 +211,7 @@ public class juegoManagerImpl implements juegoManager {
             return null;
         }
     }
-
+    @Override
     public Partida getPartida(String name) {
         logger.info("getObjeto("+name+")");
 
@@ -236,18 +255,8 @@ public class juegoManagerImpl implements juegoManager {
     @Override
     public List<Partida> globalPartidas() {
 
-        if (partidas.size()!=0) {
-            partidas.sort(new Comparator<Partida>() {
-                @Override
-                public int compare(Partida o1, Partida o2) {
-                    return Double.compare(o2.getNum_levels(), o1.getNum_levels());
-                }
-            });
-
-//        products.sort((o1, o2)-> Double.compare(o1.getPrice(), o2.getPrice()));
-
-            logger.info("se ha podido ordenar la lista correctamente");
-            return partidas;
+        if (this.partidas.size()!=0) {
+            return this.partidas;
         }
         else {
             logger.warn("no se han podido encontrar objetos");
@@ -291,7 +300,6 @@ public class juegoManagerImpl implements juegoManager {
             t.setName(p.getName());
             t.setPartida_actual(p.getPartida_actual());
             t.setActual_score(p.getActual_score());
-
             logger.info(t+" updated ");
         }
         else {
@@ -300,13 +308,13 @@ public class juegoManagerImpl implements juegoManager {
 
         return t;
     }
+    @Override
     public Partida updatePartida(Partida p) {
         Partida t = this.getPartida(p.getId());
 
         if (t!=null) {
             logger.info(p+" rebut!!!! ");
 
-            t.setId(p.getId());
             t.setDescription(p.getDescription());
             t.setNum_levels(p.getNum_levels());
 
