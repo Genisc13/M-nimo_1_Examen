@@ -10,6 +10,9 @@ public class Partida {
     List<User> usuarios;
 
     public Partida(){
+        this.setId("");
+        this.setDescription("");
+        this.setNum_levels(0);
         this.usuarios=new LinkedList<>();
     }
     public Partida(String id, String description, int num_levels) {

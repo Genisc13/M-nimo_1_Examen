@@ -1,9 +1,7 @@
 package edu.upc.dsa.services;
-import edu.upc.dsa.models.LevelResults;
-import edu.upc.dsa.models.Partida;
+import edu.upc.dsa.models.*;
 import edu.upc.dsa.juegoManager;
 import edu.upc.dsa.juegoManagerImpl;
-import edu.upc.dsa.models.User;
 import edu.upc.dsa.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -129,7 +127,7 @@ public class GamesService {
     @GET
     @ApiOperation(value = "get a User level", notes = "Da el nivel del usuario segun su id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Integer.class),
+            @ApiResponse(code = 201, message = "Successful", response = Level.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
@@ -138,13 +136,14 @@ public class GamesService {
     public Response getUserlevel(@PathParam("id") String id) {
         User user=this.mm.getUser(id);
         int t = this.mm.actualLevel(id);
+        Level level=new Level(t);
         if (user==null) return Response.status(404).build();
-        else  return Response.status(201).entity(t).build();
+        else  return Response.status(201).entity(level).build();
     }
     @GET
     @ApiOperation(value = "get a User actual_score", notes = "Da el score del usuario segun su id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Integer.class),
+            @ApiResponse(code = 201, message = "Successful", response = Score.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
@@ -153,8 +152,9 @@ public class GamesService {
     public Response getUserscore(@PathParam("id") String id) {
         User user=this.mm.getUser(id);
         int t = this.mm.actual_score(id);
+        Score score= new Score(t);
         if (user==null) return Response.status(404).build();
-        else  return Response.status(201).entity(t).build();
+        else  return Response.status(201).entity(score).build();
     }
     @GET
     @ApiOperation(value = "get a Partida", notes = "Da una partida segun su id")

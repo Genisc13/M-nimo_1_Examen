@@ -10,6 +10,10 @@ public class LevelResults {
     String date;
 
     public LevelResults(){
+        this.setId_partida("");
+        this.setLevel(0);
+        this.setDate("");
+        this.setPoints(0);
     }
     public LevelResults(String id_partida, int level, int points, String date) {
         this.id_partida = id_partida;

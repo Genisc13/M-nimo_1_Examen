@@ -7,7 +7,9 @@ public class GameResults {
     int final_score;
 
     public GameResults(){
-        resultados=new LinkedList<>();
+        this.setId("");
+        this.setFinal_score(0);
+        this.resultados=new LinkedList<>();
     }
     public GameResults(String id, int final_score) {
         this.setId(id);
