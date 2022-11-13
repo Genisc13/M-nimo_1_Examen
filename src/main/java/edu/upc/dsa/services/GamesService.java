@@ -4,6 +4,7 @@ import edu.upc.dsa.models.Partida;
 import edu.upc.dsa.juegoManager;
 import edu.upc.dsa.juegoManagerImpl;
 import edu.upc.dsa.models.User;
+import edu.upc.dsa.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -128,7 +129,7 @@ public class GamesService {
     @GET
     @ApiOperation(value = "get a User level", notes = "Da el nivel del usuario segun su id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = int.class),
+            @ApiResponse(code = 201, message = "Successful", response = Integer.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
@@ -143,7 +144,7 @@ public class GamesService {
     @GET
     @ApiOperation(value = "get a User actual_score", notes = "Da el score del usuario segun su id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = int.class),
+            @ApiResponse(code = 201, message = "Successful", response = Integer.class),
             @ApiResponse(code = 404, message = "User not found")
     })
 
@@ -268,7 +269,9 @@ public class GamesService {
 
         Partida t = this.mm.acaba_partida(mm.getUser(id_user));
 
-        if (t == null) return Response.status(404).build();
+        if (t == null) {
+            return Response.status(404).build();
+        }
 
         return Response.status(201).build();
     }
@@ -298,7 +301,7 @@ public class GamesService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response newObjeto(Partida partida) {
 
-        if (partida.getId()==null || partida.getDescription()==null || partida.getNum_levels()<=0)  return Response.status(500).entity(partida).build();
+        if (partida.getId()==null || partida.getDescription()==null)  return Response.status(500).entity(partida).build();
         this.mm.crearPartida(partida);
         return Response.status(201).entity(partida).build();
     }

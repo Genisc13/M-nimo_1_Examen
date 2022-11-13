@@ -3,9 +3,8 @@ package edu.upc.dsa;
 import edu.upc.dsa.models.LevelResults;
 import edu.upc.dsa.models.Partida;
 import edu.upc.dsa.models.User;
-
+import edu.upc.dsa.util.*;
 import java.util.*;
-
 import org.apache.log4j.Logger;
 
 public class juegoManagerImpl implements juegoManager {
@@ -47,8 +46,6 @@ public class juegoManagerImpl implements juegoManager {
         logger.info("new User added");
         return t;
     }
-    // Para la creación de un juego se debe indicar un
-    //identificador, una descripción y un número de niveles
     public Partida crearPartida(Partida t) {
         logger.info("new Game " + t);
         this.partidas.add (t);
@@ -64,13 +61,6 @@ public class juegoManagerImpl implements juegoManager {
         return this.crearPartida(new Partida(id, description, num_levels));
     }
 
-    //Se debe
-    //indicar el identificador del juego y el identificador del usuario. El
-    //resultado de la operación es que el usuario entra en el primer nivel con
-    //50 puntos iniciales. En caso que el usuario o juego no existan, se deberá
-    //indicar el error. Un jugador SÓLO puede estar en una partida al mismo
-    //tiempo. En caso que el jugador ya tenga una partida activa, se deberá
-    //indicar el error.
     @Override
     public Partida iniciarPartida(String id_partida,String user_id){
         User iniciador= this.getUser(user_id);
@@ -95,14 +85,6 @@ public class juegoManagerImpl implements juegoManager {
         return this.getUser(user_id).getActual_score();
     }
 
-    //Se deberá indicar el identificador de usuario, los puntos
-    //conseguidos con el paso de nivel y la fecha en la que se produce el
-    //cambio de nivel. El resultado de la operación consiste en un cambio del
-    //nivel que será el siguiente respecto al que estaba y se mantendrá el
-    //acumulado de puntos de esa partida, de ese jugadorl. En caso que el
-    //usuario esté en el último nivel, se incrementará la puntuación acumulada
-    //en 100 puntos y la partida finalizará. En caso que el usuario no exista o
-    //no esté en una partida en curso, se deberá indicar el error.
     @Override
     public LevelResults level_passed(String user_id,int score,String date){
         User pasador= this.getUser(user_id);
@@ -126,9 +108,6 @@ public class juegoManagerImpl implements juegoManager {
         }
 
     }
-    //Finalizar partida. Se indica que un determinado usuario ha finalizado la
-    //partida actual. En caso que el usuario no exista o no esté en una partida
-    //en curso de deberá indicar el error
     @Override
     public Partida acaba_partida(User usuario){
         User usuari=this.getUser(usuario.getId());
@@ -161,8 +140,6 @@ public class juegoManagerImpl implements juegoManager {
         });
         return lista;
     }
-    //- Consulta de las partidas en las que ha participado un usuario. En
-    //caso que el usuario no exista se deberá indicar un error.
     @Override
     public List<Partida> userPartidas(String user_id) {
         User user= getUser(user_id);
@@ -174,12 +151,6 @@ public class juegoManagerImpl implements juegoManager {
             logger.warn("not found" + user);
             return null;}
     }
-    //Se
-    //proporciona un listado de información asociada a la actividad del usuario
-    //en el juego. Ejemplo: actividad(“juan”, “the game”): -> [ {level: 1, points:
-    //5, date: dd-mm-aaaa}, {level:2, points:15, date: dd-mm-aaaa}, {level3:
-    //points: 20, date: dd-mm-aaaa}]
-
     @Override
     public List<LevelResults> resultadosPartidaUsuario(String id_partida, String user_id){
         User usuario= this.getUser(user_id);

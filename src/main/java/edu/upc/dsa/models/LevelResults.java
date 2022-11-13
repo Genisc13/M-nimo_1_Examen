@@ -52,7 +52,7 @@ public class LevelResults {
 
     @Override
     public String toString() {
-        return "User [id="+id_partida+", level=" + level + ", num_points=" + points+", date= "+ date +"]";
+        return "Resultados de nivel [id="+id_partida+", level=" + level + ", num_points=" + points+", date= "+ date +"]";
     }
 
 }

@@ -1,7 +1,7 @@
 package edu.upc.dsa.models;
-
 import java.util.LinkedList;
 import java.util.List;
+
 
 public class User {
 
@@ -95,7 +95,7 @@ public class User {
         return "User [id="+id+", name=" + name + ", surname=" + surname +",score= "+ actual_score +"]";
     }
 
-    public Partida iniciarPartida(Partida t){
+    public Partida iniciarPartida(Partida t) {
         if (partida_actual!=null){
             return null;
         }

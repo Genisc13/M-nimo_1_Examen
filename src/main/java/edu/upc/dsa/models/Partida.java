@@ -10,9 +10,6 @@ public class Partida {
     List<User> usuarios;
 
     public Partida(){
-        this.setId("");
-        this.setDescription("");
-        this.setNum_levels(0);
         this.usuarios=new LinkedList<>();
     }
     public Partida(String id, String description, int num_levels) {
@@ -55,7 +52,7 @@ public class Partida {
 
     @Override
     public String toString() {
-        return "User [id="+id+", description=" + description + ", num_levels=" + num_levels +"]";
+        return "Partida [id="+id+", description=" + description + ", num_levels=" + num_levels +"]";
     }
 
 }

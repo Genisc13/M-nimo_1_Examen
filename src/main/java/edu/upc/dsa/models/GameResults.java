@@ -52,6 +52,6 @@ public class GameResults {
     }
     @Override
     public String toString() {
-        return "User [id="+id+", final_score=" + final_score +"]";
+        return "Resultados de partida [id="+id+", final_score=" + final_score +"]";
     }
 }
