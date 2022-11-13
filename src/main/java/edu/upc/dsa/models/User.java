@@ -9,7 +9,7 @@ public class User {
     String name;
     String surname;
     Partida partida_actual;
-    List<Partida> partidas;
+    List<String> id_partidas;
     List<GameResults> resultados;
     int actual_score;
     int actual_level;
@@ -17,7 +17,7 @@ public class User {
 
     public User() {
 //      this.id = RandomUtils.getId();
-        this.partidas = new LinkedList<Partida>();
+        this.id_partidas = new LinkedList<String>();
         this.resultados=new LinkedList<>();
     }
 
@@ -27,7 +27,7 @@ public class User {
         this.setSurname(surname);
         this.setName(name);
         this.resultados= new LinkedList<GameResults>();
-        this.partidas =new LinkedList<Partida>();
+        this.id_partidas =new LinkedList<String>();
         this.setActual_score(0);
         this.setActual_level(0);
     }
@@ -40,12 +40,12 @@ public class User {
         this.resultados = resultados;
     }
 
-    public List<Partida> getPartidas() {
-        return partidas;
+    public List<String> getId_partidas() {
+        return id_partidas;
     }
 
-    public void setPartidas(List<Partida> partidas) {
-        this.partidas = partidas;
+    public void setId_partidas(List<String> id_partidas) {
+        this.id_partidas = id_partidas;
     }
 
     public int getActual_score() {
@@ -135,7 +135,7 @@ public class User {
         if(this.getPartida_actual()!=null) {
             Partida acabada = this.getPartida_actual();
             this.setPartida_actual(null);
-            this.partidas.add(acabada);
+            this.id_partidas.add(acabada.getId());
             return acabada;
         }
         else {

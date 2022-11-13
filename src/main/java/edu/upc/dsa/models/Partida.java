@@ -7,7 +7,7 @@ public class Partida {
     String id;
     String description;
     int num_levels;
-    List<User> usuarios;
+    List<String> usuarios;
 
     public Partida(){
         this.setId("");
@@ -21,11 +21,11 @@ public class Partida {
         this.setNum_levels(num_levels);
         this.usuarios=new LinkedList<>();
     }
-    public List<User> getUsuarios() {
+    public List<String> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(List<User> usuarios) {
+    public void setUsuarios(List<String> usuarios) {
         this.usuarios = usuarios;
     }
 

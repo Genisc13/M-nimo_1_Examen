@@ -38,8 +38,8 @@ public class juegoManagerImpl implements juegoManager {
     @Override
     public User addUser(User t) {
         logger.info("new User " + t);
-        if (users.containsValue(t.getName())){
-            logger.warn("El usuario con este nombre ya fue registrado");
+        if (users.containsValue(t)){
+            logger.warn("El usuario ya fue registrado");
             return null;
         }
         this.users.put(t.getId(),t);
@@ -67,7 +67,7 @@ public class juegoManagerImpl implements juegoManager {
         Partida empezada = iniciador.iniciarPartida(getPartida(id_partida));
         if (empezada!=null){
             logger.info("La partida se pudo empezar correctamente");
-            this.getPartida(id_partida).getUsuarios().add(iniciador);
+            this.getPartida(id_partida).getUsuarios().add(iniciador.getId());
             return empezada;
         }
         else {
@@ -123,7 +123,7 @@ public class juegoManagerImpl implements juegoManager {
             }
             else{
                 logger.info("se ha acabado la partida correctamente");
-                acabada.getUsuarios().remove(usuari);
+                acabada.getUsuarios().remove(usuari.getId());
                 return acabada;
             }
         }
@@ -131,7 +131,7 @@ public class juegoManagerImpl implements juegoManager {
     @Override
     public List<User> usuarios_partida(Partida partida){
         Partida partit=this.getPartida(partida.getId());
-        List<User> lista=partit.getUsuarios();
+        List<User> lista=getlistaUsers(partit.getUsuarios());
         lista.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
@@ -144,12 +144,26 @@ public class juegoManagerImpl implements juegoManager {
     public List<Partida> userPartidas(String user_id) {
         User user= getUser(user_id);
         if (user!=null){
-            logger.info("found"+ user.getPartidas());
-            return user.getPartidas();
+            logger.info("found"+ this.getlistaPartidas(user.getId_partidas()));
+            return this.getlistaPartidas(user.getId_partidas());
         }
         else {
             logger.warn("not found" + user);
             return null;}
+    }
+    public List<Partida> getlistaPartidas(List<String> lista_ids){
+        List<Partida> lista= new ArrayList<>();
+        for(String t : lista_ids ){
+            lista.add(this.getPartida(t));
+        }
+        return lista;
+    }
+    public List<User> getlistaUsers(List<String> lista_ids){
+        List<User> lista= new ArrayList<>();
+        for(String t : lista_ids ){
+            lista.add(this.getUser(t));
+        }
+        return lista;
     }
     @Override
     public List<LevelResults> resultadosPartidaUsuario(String id_partida, String user_id){
@@ -243,8 +257,7 @@ public class juegoManagerImpl implements juegoManager {
             logger.warn("not found " + t);
         }
         else logger.info(t+" deleted ");
-
-        this.users.remove(t);
+        this.users.remove(t.getId());
 
     }
     @Override
